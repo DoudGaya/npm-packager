@@ -11,7 +11,7 @@ export default function LandingPage() {
           <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold text-white tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                   Create and Deploy NPM Packages with AI
                 </h1>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl">

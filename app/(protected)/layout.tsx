@@ -19,14 +19,14 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 border-b bg-background">
-        <div className=" max-w-7xl mx-auto flex h-16 items-center py-4">
+        <div className="container flex h-16 items-center justify-between py-4">
           <MobileNav />
-          <div className="hidden md:flex w-full">
+          <div className="hidden md:block">
             <UserAccountNav user={user} />
           </div>
         </div>
       </header>
-      <div className="container mx-auto py-10 grid flex-1 gap-12 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
+      <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr]">
         <aside className="hidden w-[200px] flex-col md:flex lg:w-[240px]">
           <Sidebar />
         </aside>
