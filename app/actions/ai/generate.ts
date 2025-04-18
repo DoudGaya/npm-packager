@@ -33,8 +33,9 @@ export async function generatePackage(data: z.infer<typeof generateSchema>) {
   try {
     // Check if user has reached their limit
     const canUseAI = await checkSubscriptionLimit(user.id, data.model)
-
+    // @ts-ignore
     if (!canUseAI.allowed) {
+      // @ts-ignore
       throw new Error(canUseAI.message)
     }
 
