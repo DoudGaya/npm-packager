@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import { signIn } from "next-auth/react"
-import { AuthError } from "next-auth"
+import AuthError  from "next-auth"
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -37,10 +37,12 @@ export async function login(formData: FormData) {
     return { success: true }
   } catch (error) {
     if (error instanceof AuthError) {
+      // @ts-ignore
       if (error.message === "2FA_REQUIRED") {
         return { requires2FA: true }
       }
 
+      // @ts-ignore
       if (error.message === "INVALID_2FA") {
         return { error: "Invalid 2FA code" }
       }

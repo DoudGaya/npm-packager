@@ -19,7 +19,7 @@ interface UserAccountNavProps {
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center w-full justify-between gap-4">
       <Link href="/" className="hidden items-center md:flex">
         <Logo className="mr-2 h-6 w-6" />
         <span className="font-bold">NPM-Packager</span>

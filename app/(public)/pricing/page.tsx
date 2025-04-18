@@ -20,7 +20,6 @@ export default function PricingPage() {
           </p>
         </div>
       </div>
-
       <div className="grid gap-6 py-12 md:grid-cols-2 lg:grid-cols-3">
         <Card className="flex flex-col">
           <CardHeader>

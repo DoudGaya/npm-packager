@@ -114,7 +114,7 @@ export default function RegisterPage() {
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="gap-4 grid grid-cols-2">
             <FormField
               control={form.control}
               name="name"
@@ -122,7 +122,7 @@ export default function RegisterPage() {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input placeholder="Abdulrahman D." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -167,7 +167,7 @@ export default function RegisterPage() {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isLoading}>
+            <Button type="submit" className="w-full col-span-2" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Register
             </Button>
@@ -175,7 +175,7 @@ export default function RegisterPage() {
         </Form>
       </CardContent>
       <CardFooter>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm flex text-center text-muted-foreground">
           Already have an account?{" "}
           <Link href="/login" className="hover:text-primary underline underline-offset-4">
             Login
