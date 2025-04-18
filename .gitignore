@@ -16,6 +16,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# compressed files
+*.zip
+*.tar.gz
+*.tar
+*.tar.bz2
+*.tar.xz
+*.rar
+*.7z
+
 # env files
 .env*
 
