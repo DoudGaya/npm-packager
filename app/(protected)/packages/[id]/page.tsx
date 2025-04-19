@@ -10,16 +10,25 @@ import { PackageDocumentation } from "@/components/package-documentation"
 import { PackageCode } from "@/components/package-code"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-interface PackagePageProps {
-  params: {
-    id: string
-  }
+// interface PackagePageProps {
+//   params: {
+//     id: string
+//   }
+// }
+
+// export async function generateMetadata({ params }: PackagePageProps): Promise<Metadata> {
+
+
+//   const { id } = params
+
+type PackagePageProps = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export async function generateMetadata({ params }: PackagePageProps): Promise<Metadata> {
-
-
   const { id } = params
+
   const pkg = await db.package.findUnique({
     where: {
       id: id
