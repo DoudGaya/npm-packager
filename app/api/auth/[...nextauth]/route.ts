@@ -3,9 +3,19 @@ import type { NextAuthOptions } from "next-auth"
 import NextAuth from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GitHubProvider from "next-auth/providers/github"
-import { compare } from "bcrypt"
+import { compare } from "bcryptjs"
+import { DefaultSession } from "next-auth"
 
 import { db } from "@/lib/db"
+
+declare module "next-auth" {
+  interface Session extends DefaultSession {
+    user: {
+      id: string
+      role: string
+    } & DefaultSession["user"]
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
@@ -77,17 +87,21 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id as string
-        session.user.name = token.name
-        session.user.email = token.email
-        session.user.role = token.role as string
-        session.user.image = token.picture
+        session.user = {
+          ...session.user,
+          id: token.id as string,
+          name: token.name,
+          email: token.email,
+          role: token.role as string,
+          image: token.picture,
+        }
       }
       return session
     },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        // @ts-ignore
         token.role = user.role
       }
       return token
