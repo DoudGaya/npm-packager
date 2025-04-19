@@ -17,6 +17,9 @@ interface PackagePageProps {
 }
 
 export async function generateMetadata({ params }: PackagePageProps): Promise<Metadata> {
+
+
+  const {id } = await params
   const pkg = await db.package.findUnique({
     where: {
       id: params.id,
