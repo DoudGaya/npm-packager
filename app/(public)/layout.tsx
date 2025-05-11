@@ -15,7 +15,7 @@ export default function PublicLayout({
         <div className="container mx-auto flex h-16 items-center justify-between py-4">
           <Link href="/" className="flex items-center">
             <Logo className="mr-2 stroke-primary h-6 w-6" />
-            <span className="font-bold sm:flex hidden">NPM-Packager</span>
+            <span className="font-bold text-primary dark:text-primary sm:flex hidden">NPM-Packager</span>
           </Link>
           <nav className="hidden items-center space-x-4 md:flex">
             <Link href="/features" className="text-sm hover:text-primary font-medium text-muted-foreground">

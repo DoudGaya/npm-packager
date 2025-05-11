@@ -28,7 +28,7 @@ export default function LandingPage() {
                   </Button>
                 </Link>
                 <Link href="/features">
-                  <Button size="lg" variant="outline">
+                  <Button size="lg" className=" border-primary text-primary" variant="outline">
                     Learn More
                   </Button>
                 </Link>
