@@ -30,6 +30,8 @@ export default async function SettingsPage() {
       
         <SettingsTabs 
         // @ts-ignore
+
+        
         user={user} apiKeys={apiKeys} />
       </div>
     </DashboardShell>

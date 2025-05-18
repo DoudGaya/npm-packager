@@ -22,7 +22,7 @@ const profileFormSchema = z.object({
 })
 
 interface ProfileFormProps {
-  user: Pick<User, "id" | "name" | "email" | "image" | "bio">
+  user: Pick<User, "id" | "name" | "email" | "image"> & { bio?: string }
 }
 
 export function ProfileForm({ user }: ProfileFormProps) {
@@ -33,7 +33,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     defaultValues: {
       name: user.name || "",
       email: user.email || "",
-      bio: user.bio || "",
+      bio: "",
     },
   })
 

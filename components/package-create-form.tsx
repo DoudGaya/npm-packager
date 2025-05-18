@@ -11,7 +11,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Card, CardContent } from "@/components/ui/card"
 import { createPackage } from "@/app/actions/packages/create"
 import { checkPackageName } from "@/app/actions/packages/check-name"
@@ -53,6 +53,7 @@ export function PackageCreateForm() {
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+
     try {
       setIsGenerating(true)
 
@@ -81,25 +82,22 @@ export function PackageCreateForm() {
       const result = await createPackage(formData)
 
       if (result.error) {
-        toast({
-          title: "Error",
+        toast( "Error", {
           description: result.error,
-          variant: "destructive",
         })
         return
       }
-
-      toast({
-        title: "Success",
+ 
+      toast( "Success", {
         description: "Package created successfully",
       })
 
       router.push(`/packages/${result.packageId}`)
     } catch (error) {
-      toast({
-        title: "Error",
+
+      console.error("Error creating package:", error)
+      toast( "Error", {
         description: "Failed to create package",
-        variant: "destructive",
       })
     } finally {
       setIsGenerating(false)
@@ -237,8 +235,9 @@ export function PackageCreateForm() {
                       {...field}
                     />
                   </FormControl>
+
                   <FormDescription>Describe the functionality, features, and purpose of your package</FormDescription>
-                  <FormMessage />
+                  <FormMessage /> 
                 </FormItem>
               )}
             />
