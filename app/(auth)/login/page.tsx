@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -15,14 +15,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Icons } from "@/components/icons"
 import { toast } from "sonner"
 
-
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(1, "Password is required"),
   code: z.string().optional(),
 })
 
-export default function LoginPage() {
+// Content component that uses useSearchParams
+function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard"
@@ -51,9 +51,7 @@ export default function LoginPage() {
 
       if (result?.error === "2FA_REQUIRED") {
         setRequires2FA(true)
-        toast("2FA Required", {
-
-        })
+        toast("2FA Required", {})
         return
       }
 
@@ -70,7 +68,6 @@ export default function LoginPage() {
       toast("Error", {
         description: "Something went wrong. Please try again.",
       })
-
     } finally {
       setIsLoading(false)
     }
@@ -81,11 +78,11 @@ export default function LoginPage() {
       setIsLoading(true)
       await signIn("github", { callbackUrl })
     } catch (error) {
-      toast( "Error", {
+      toast("Error", {
         description: "Something went wrong. Please try again.",
       })
       setIsLoading(false)
-    } 
+    }
   }
 
   return (
@@ -171,5 +168,14 @@ export default function LoginPage() {
         </div>
       </CardFooter>
     </Card>
+  )
+}
+
+// Main page component
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   )
 }

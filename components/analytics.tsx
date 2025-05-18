@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname, useSearchParams } from "next/navigation"
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 
 // Add this type declaration to tell TypeScript about the gtag function
 declare global {
@@ -14,7 +14,8 @@ declare global {
   }
 }
 
-export function Analytics() {
+// Component that uses search params
+function AnalyticsContent() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -27,4 +28,13 @@ export function Analytics() {
   }, [pathname, searchParams])
 
   return null
+}
+
+// Main component with suspense boundary
+export function Analytics() {
+  return (
+    <Suspense fallback={null}>
+      <AnalyticsContent />
+    </Suspense>
+  )
 }

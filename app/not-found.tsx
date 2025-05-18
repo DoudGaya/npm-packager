@@ -1,19 +1,30 @@
+"use client"
+
+import { Suspense } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
+// Create a client component that uses useSearchParams
+function NotFoundContent() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-[60vh] max-w-md mx-auto text-center p-4">
+      <h1 className="text-4xl font-bold tracking-tight mb-4">404</h1>
+      <h2 className="text-2xl font-semibold mb-4">Page Not Found</h2>
+      <p className="text-muted-foreground mb-8">
+        Sorry, we couldn't find the page you're looking for.
+      </p>
+      <Button asChild>
+        <Link href="/">Return Home</Link>
+      </Button>
+    </div>
+  )
+}
+
+// This is the main not-found page component
 export default function NotFound() {
   return (
-    <div className="container flex min-h-screen flex-col items-center justify-center">
-      <div className="flex flex-col items-center justify-center text-center">
-        <h1 className="text-4xl font-bold">404</h1>
-        <h2 className="mt-2 text-2xl font-semibold">Page Not Found</h2>
-        <p className="mt-4 text-muted-foreground">The page you are looking for doesn't exist or has been moved.</p>
-        <div className="mt-6">
-          <Button asChild>
-            <Link href="/">Go Home</Link>
-          </Button>
-        </div>
-      </div>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <NotFoundContent />
+    </Suspense>
   )
 }
