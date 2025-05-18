@@ -3,12 +3,23 @@
 import { usePathname, useSearchParams } from "next/navigation"
 import { useEffect } from "react"
 
+// Add this type declaration to tell TypeScript about the gtag function
+declare global {
+  interface Window {
+    gtag: (
+      command: string,
+      trackingId: string,
+      options?: { page_path?: string; [key: string]: any }
+    ) => void;
+  }
+}
+
 export function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    if (pathname && window.gtag) {
+    if (pathname && typeof window.gtag === 'function') {
       window.gtag("config", process.env.NEXT_PUBLIC_GA_ID as string, {
         page_path: pathname,
       })
