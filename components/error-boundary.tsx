@@ -8,6 +8,7 @@ interface ErrorBoundaryProps {
   reset: () => void
 }
 
+
 export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   useEffect(() => {
     // Log the error to an error reporting service

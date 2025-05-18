@@ -55,7 +55,7 @@ export default function LandingPage() {
             <div className="space-y-2">
               <div className="inline-block rounded-lg bg-primary/10 text-primary px-3 py-1 text-sm">Key Features</div>
               <h2 className="text-3xl font-bold text-primary tracking-tighter sm:text-5xl">Everything You Need</h2>
-              <p className="max-w-[900px] text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="max-w-[900px] text-gray-800 dark:text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 NPM-Packager provides all the tools you need to create, manage, and publish NPM packages.
               </p>
             </div>
@@ -93,12 +93,12 @@ export default function LandingPage() {
       </section>
 
       {/* How It Works Section */}
-      <section className="w-full bg-stone-950 text-primary py-12 md:py-24 lg:py-32">
+      <section className="w-full dark:bg-stone-950 bg-white text-primary py-12 md:py-24 lg:py-32">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
             <div className="space-y-2">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How It Works</h2>
-              <p className="max-w-[900px] text-secondary md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              <p className="max-w-[900px] text-gray-900 dark:text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 Create and publish NPM packages in three simple steps.
               </p>
             </div>

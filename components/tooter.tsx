@@ -10,7 +10,7 @@ import { DarkButton } from "./DarkButton"
 
 export function Footer() {
   return (
-    <footer className="bg-background bg-black border-t border-primary/30 text-secondary">
+    <footer className="dark:bg-gray-950 bg-gray-200 border-t border-primary/30 text-secondary">
       <div className="container mx-auto px-4 md:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Company Info */}
@@ -22,30 +22,30 @@ export function Footer() {
             <p className="text-muted-foreground">
               Create and deploy NPM packages using AI. Save time and focus on what matters.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex stroke-gray-500 space-x-4">
               <Link href="https://github.com/npmpackager" target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="icon" aria-label="GitHub">
-                  <Github className="h-5 w-5" />
+                  <Github className="h-5 w-5 stroke-gray-800 dark:stroke-gray-400" />
                 </Button>
               </Link>
               <Link href="https://twitter.com/npmpackager" target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="icon" aria-label="Twitter">
-                  <Twitter className="h-5 w-5" />
+                  <Twitter className="h-5 w-5 stroke-gray-800 dark:stroke-gray-400" />
                 </Button>
               </Link>
               <Link href="https://linkedin.com/company/npmpackager" target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="icon" aria-label="LinkedIn">
-                  <Linkedin className="h-5 w-5" />
+                  <Linkedin className="h-5 w-5 stroke-gray-800 dark:stroke-gray-400" />
                 </Button>
               </Link>
               <Link href="https://facebook.com/npmpackager" target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="icon" aria-label="Facebook">
-                  <Facebook className="h-5 w-5" />
+                  <Facebook className="h-5 w-5 stroke-gray-800 dark:stroke-gray-400" />
                 </Button>
               </Link>
               <Link href="https://instagram.com/npmpackager" target="_blank" rel="noopener noreferrer">
                 <Button variant="ghost" size="icon" aria-label="Instagram">
-                  <Instagram className="h-5 w-5" />
+                  <Instagram className="h-5 w-5 stroke-gray-800 dark:stroke-gray-400" />
                 </Button>
               </Link>
             </div>
@@ -153,7 +153,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 text-xs text-between flex text-muted-foreground">
+        <div className="mt-8 text-xs text-between justify-between flex text-muted-foreground">
           <p>
             NPM-Packager is not affiliated with npm, Inc. or GitHub, Inc. All product names, logos, and brands are
             property of their respective owners.

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Logo } from "@/components/logo"
 // import { Footer } from "@/components/footer"
 import { Footer } from "@/components/tooter"
+import PublicNavigation from "@/components/PublicNavigation"
 
 export default function PublicLayout({
   children,
@@ -12,36 +13,7 @@ export default function PublicLayout({
 }>) {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 border-b bg-background">
-        <div className="container mx-auto flex h-16 items-center justify-between py-4">
-          <Link href="/" className="flex items-center">
-            <Logo className="mr-2 h-6 w-6" />
-            <span className="font-bold">NPM-Packager</span>
-          </Link>
-          <nav className="hidden items-center space-x-4 md:flex">
-            <Link href="/features" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Features
-            </Link>
-            <Link href="/pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Pricing
-            </Link>
-            <Link href="/docs" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              Documentation
-            </Link>
-            <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground">
-              About
-            </Link>
-          </nav>
-          <div className="flex items-center space-x-4">
-            <Link href="/login">
-              <Button variant="ghost">Login</Button>
-            </Link>
-            <Link href="/register">
-              <Button>Sign Up</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
+     <PublicNavigation  />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

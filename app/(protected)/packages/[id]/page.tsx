@@ -26,9 +26,6 @@ type PackagePageProps = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-
-
-
 export async function generateMetadata({ params }: PackagePageProps): Promise<Metadata> {
   const { id } = params
 
@@ -50,12 +47,10 @@ export async function generateMetadata({ params }: PackagePageProps): Promise<Me
   }
 }
 
-export default async function PackagePage({ 
-  // @ts-ignore
-  params }: Promise<any>) {
+export default async function PackagePage({ params }: PackagePageProps) {
   const user = await getCurrentUser()
 
-  const { id } = params
+  const { id } = await params
 
   if (!user) {
     return notFound()
