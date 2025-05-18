@@ -3,13 +3,21 @@
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import * as z from "zod"
 
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/hooks/use-toast"
-import { resetPasswordSchema, type ResetPasswordFormValues } from "@/schema/schema"
+// import { resetPasswordAction } from "@/lib/actions/auth-actions"
 import { resetPasswordAction } from "@/lib/actions/auth-actions"
+
+// Define schema inline since import is missing
+const resetPasswordSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+});
+
+type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
 export function ResetPasswordForm() {
   const { toast } = useToast()
