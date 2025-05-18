@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type { User } from "@prisma/client"
 import { Loader2, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -19,13 +19,26 @@ export function SubscriptionForm({ user }: SubscriptionFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState<"FREE" | "PRO" | "TEAM">((user.subscriptionPlan as any) || "FREE")
   const [paymentProvider, setPaymentProvider] = useState<"STRIPE" | "PAYPAL">("STRIPE")
+  const [planDetails, setPlanDetails] = useState<any>({
+    current: { name: "Free", features: [] },
+    FREE: { name: "Free", features: [] },
+    PRO: { name: "Pro", features: [] },
+    TEAM: { name: "Team", features: [] }
+  })
 
-  const currentPlan = getSubscriptionPlanDetails((user.subscriptionPlan as any) || "FREE")
-  const plans = {
-    FREE: getSubscriptionPlanDetails("FREE"),
-    PRO: getSubscriptionPlanDetails("PRO"),
-    TEAM: getSubscriptionPlanDetails("TEAM"),
-  }
+  useEffect(() => {
+    const currentPlan = getSubscriptionPlanDetails((user.subscriptionPlan as any) || "FREE")
+    const plans = {
+      FREE: getSubscriptionPlanDetails("FREE"),
+      PRO: getSubscriptionPlanDetails("PRO"),
+      TEAM: getSubscriptionPlanDetails("TEAM"),
+    }
+    
+    setPlanDetails({
+      current: currentPlan,
+      ...plans
+    })
+  }, [user.subscriptionPlan])
 
   const handleChangePlan = async () => {
     if (selectedPlan === user.subscriptionPlan) {
@@ -54,7 +67,9 @@ export function SubscriptionForm({ user }: SubscriptionFormProps) {
       }
 
       if (result.checkoutUrl) {
-        window.location.href = result.checkoutUrl
+        setTimeout(() => {
+          window.location.href = result.checkoutUrl
+        }, 0)
         return
       }
 
@@ -84,7 +99,7 @@ export function SubscriptionForm({ user }: SubscriptionFormProps) {
           <div>
             <h3 className="text-lg font-medium">Current Plan</h3>
             <p className="text-sm text-muted-foreground">
-              You are currently on the <span className="font-medium">{currentPlan.name}</span> plan.
+              You are currently on the <span className="font-medium">{planDetails.current.name}</span> plan.
             </p>
           </div>
 
@@ -101,14 +116,22 @@ export function SubscriptionForm({ user }: SubscriptionFormProps) {
                   </div>
                 </CardHeader>
                 <CardContent className="flex-1">
-                  <ul className="space-y-2">
-                    {plans.FREE.features.map((feature, index) => (
+                    <ul className="space-y-2">
+                      {planDetails.FREE.features && planDetails.FREE.features.map((feature: string, index: number) => (
+                        <li key={index} className="flex items-center">
+                          <Check className="mr-2 h-4 w-4 text-primary" />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  {/* <ul className="space-y-2">
+                    {planDetails.FREE.features.map((feature: string, index: number) => (
                       <li key={index} className="flex items-center">
                         <Check className="mr-2 h-4 w-4 text-primary" />
                         <span>{feature}</span>
                       </li>
                     ))}
-                  </ul>
+                  </ul> */}
                 </CardContent>
                 <CardFooter>
                   <Button
@@ -135,7 +158,8 @@ export function SubscriptionForm({ user }: SubscriptionFormProps) {
                 </CardHeader>
                 <CardContent className="flex-1">
                   <ul className="space-y-2">
-                    {plans.PRO.features.map((feature, index) => (
+                    {planDetails.PRO.features && planDetails.PRO.features.map((feature: string, index: number) => (
+                    // {planDetails.PRO.features.map((feature: string, index: number) => ( 
                       <li key={index} className="flex items-center">
                         <Check className="mr-2 h-4 w-4 text-primary" />
                         <span>{feature}</span>
@@ -167,7 +191,8 @@ export function SubscriptionForm({ user }: SubscriptionFormProps) {
                 </CardHeader>
                 <CardContent className="flex-1">
                   <ul className="space-y-2">
-                    {plans.TEAM.features.map((feature, index) => (
+                    {/* {planDetails.TEAM.features.map((feature: string, index: number) => ( */}
+                    {planDetails.TEAM.features && planDetails.TEAM.features.map((feature: string, index: number) => (
                       <li key={index} className="flex items-center">
                         <Check className="mr-2 h-4 w-4 text-primary" />
                         <span>{feature}</span>

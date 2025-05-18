@@ -10,12 +10,8 @@ export default function GlobalError({
   reset: () => void
 }) {
   return (
-    <html>
-      <body>
-        <div className="container flex min-h-screen flex-col items-center justify-center">
+        <div className="container mx-auto flex min-h-screen flex-col items-center justify-center">
           <ErrorBoundary error={error} reset={reset} />
         </div>
-      </body>
-    </html>
   )
 }

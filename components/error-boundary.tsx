@@ -16,7 +16,7 @@ export function ErrorBoundary({ error, reset }: ErrorBoundaryProps) {
   }, [error])
 
   return (
-    <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
+    <div className="flex mx-auto w-full min-h-[400px] flex-col items-center justify-center text-center">
       <h2 className="text-2xl font-bold">Something went wrong!</h2>
       <p className="mt-4 text-muted-foreground">
         We apologize for the inconvenience. Please try again or contact support if the problem persists.
