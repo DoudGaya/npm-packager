@@ -21,7 +21,9 @@ export default async function CreatePackagePage() {
     <DashboardShell>
       <DashboardHeader heading="Create Package" text="Create a new NPM package using AI" />
       <div className="grid gap-8">
-        <PackageCreateForm user={user} />
+        <PackageCreateForm 
+        // @ts-ignore
+        user={user} />
       </div>
     </DashboardShell>
   )

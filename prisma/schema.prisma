@@ -60,6 +60,7 @@ model User {
   sessions      Session[]
   packages      Package[]
   apiUsage      ApiUsage[]
+  bio           String?   @db.Text
   apiKeys       ApiKey[]
   wallet        Wallet?
   transactions  Transaction[]

@@ -26,6 +26,9 @@ type PackagePageProps = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
+
+
+
 export async function generateMetadata({ params }: PackagePageProps): Promise<Metadata> {
   const { id } = params
 
@@ -47,8 +50,12 @@ export async function generateMetadata({ params }: PackagePageProps): Promise<Me
   }
 }
 
-export default async function PackagePage({ params }: PackagePageProps) {
+export default async function PackagePage({ 
+  // @ts-ignore
+  params }: Promise<any>) {
   const user = await getCurrentUser()
+
+  const { id } = params
 
   if (!user) {
     return notFound()
@@ -56,7 +63,7 @@ export default async function PackagePage({ params }: PackagePageProps) {
 
   const pkg = await db.package.findUnique({
     where: {
-      id: params.id,
+      id: id,
       userId: user.id,
     },
   })
