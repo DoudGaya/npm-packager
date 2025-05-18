@@ -44,7 +44,10 @@ export default async function PackagesPage() {
             <EmptyPlaceholder.Description>
               You don&apos;t have any packages yet. Create one to get started.
             </EmptyPlaceholder.Description>
-            <PackageCreateButton variant="outline" />
+            
+            <PackageCreateButton 
+            // @ts-ignore
+            variant="outline" />
           </EmptyPlaceholder>
         )}
       </div>

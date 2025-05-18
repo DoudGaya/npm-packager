@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function FeaturesPage() {
   return (
-    <div className="container py-12 md:py-24 lg:py-32">
+    <div className="container mx-auto py-12 md:py-24 lg:py-32">
       <div className="flex flex-col items-center justify-center space-y-4 text-center">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl">Features</h1>

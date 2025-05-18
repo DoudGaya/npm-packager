@@ -12,8 +12,9 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { toast } from "@/components/ui/use-toast"
 import { Icons } from "@/components/icons"
+import { toast } from "sonner"
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -50,18 +51,15 @@ export default function LoginPage() {
 
       if (result?.error === "2FA_REQUIRED") {
         setRequires2FA(true)
-        toast({
-          title: "2FA Required",
-          description: "Please enter your two-factor authentication code",
+        toast("2FA Required", {
+
         })
         return
       }
 
       if (result?.error) {
-        toast({
-          title: "Error",
+        toast("Error", {
           description: "Invalid credentials. Please try again.",
-          variant: "destructive",
         })
         return
       }
@@ -69,11 +67,10 @@ export default function LoginPage() {
       router.push(callbackUrl)
       router.refresh()
     } catch (error) {
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "Something went wrong. Please try again.",
-        variant: "destructive",
       })
+
     } finally {
       setIsLoading(false)
     }
@@ -84,14 +81,11 @@ export default function LoginPage() {
       setIsLoading(true)
       await signIn("github", { callbackUrl })
     } catch (error) {
-      toast({
-        title: "Error",
+      toast( "Error", {
         description: "Something went wrong. Please try again.",
-        variant: "destructive",
       })
-    } finally {
       setIsLoading(false)
-    }
+    } 
   }
 
   return (

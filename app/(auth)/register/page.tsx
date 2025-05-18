@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { toast } from "@/components/ui/use-toast"
+import { toast } from "sonner"
 import { Icons } from "@/components/icons"
 import { register } from "@/app/actions/auth/register"
 
@@ -54,29 +54,23 @@ export default function RegisterPage() {
       const result = await register(formData)
 
       if (result?.error) {
-        toast({
-          title: "Error",
+        toast( "Error", {
           description: result.error,
-          variant: "destructive",
         })
         return
       }
 
-      toast({
-        title: "Success",
+      toast("Success", {
         description: "Registration successful. Please check your email to verify your account.",
       })
 
       router.push("/login?verified=false")
     } catch (error) {
-      toast({
-        title: "Error",
+      toast( "Error", {
         description: "Something went wrong. Please try again.",
-        variant: "destructive",
       })
-    } finally {
       setIsLoading(false)
-    }
+    } 
   }
 
   const handleGitHubSignIn = async () => {
@@ -84,14 +78,11 @@ export default function RegisterPage() {
       setIsLoading(true)
       await signIn("github", { callbackUrl: "/dashboard" })
     } catch (error) {
-      toast({
-        title: "Error",
+      toast( "Error", {
         description: "Something went wrong. Please try again.",
-        variant: "destructive",
       })
-    } finally {
       setIsLoading(false)
-    }
+    } 
   }
 
   return (

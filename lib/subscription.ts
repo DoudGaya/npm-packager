@@ -1,3 +1,4 @@
+'use server'
 import type { SubscriptionPlan } from "@prisma/client"
 import { db } from "@/lib/db"
 
@@ -13,7 +14,7 @@ interface PlanDetails {
   }
 }
 
-export function getSubscriptionPlanDetails(plan: SubscriptionPlan): PlanDetails {
+export async function getSubscriptionPlanDetails(plan: SubscriptionPlan): Promise<PlanDetails> {
   const plans: Record<SubscriptionPlan, PlanDetails> = {
     FREE: {
       name: "Free",
@@ -65,7 +66,7 @@ export function getSubscriptionPlanDetails(plan: SubscriptionPlan): PlanDetails 
   return plans[plan]
 }
 
-export async function checkSubscriptionLimit(userId: string, model: string): Promise<boolean> {
+export async function  checkSubscriptionLimit(userId: string, model: string): Promise<boolean> {
   const user = await db.user.findUnique({
     where: { id: userId },
   })
@@ -75,7 +76,7 @@ export async function checkSubscriptionLimit(userId: string, model: string): Pro
   }
 
   // Get plan details
-  const planDetails = getSubscriptionPlanDetails(user.subscriptionPlan as SubscriptionPlan)
+  const planDetails = await getSubscriptionPlanDetails(user.subscriptionPlan as SubscriptionPlan)
 
   // Check if model is allowed for the plan
   if (!planDetails.limits.aiModels.includes(model)) {
@@ -97,7 +98,12 @@ export async function checkSubscriptionLimit(userId: string, model: string): Pro
       },
     })
 
-    return usageCount < 10 // 10 prompts per day limit
+    const isAllowed = usageCount < 10
+
+
+    return isAllowed // 10 prompts per day limit
+
+    // 10 prompts per day limit
   }
 
   // For paid plans, check if subscription is active
@@ -139,7 +145,7 @@ export async function checkPublishingPermission(userId: string, platform: "githu
   }
 
   // Get plan details
-  const planDetails = getSubscriptionPlanDetails(user.subscriptionPlan as SubscriptionPlan)
+  const planDetails = await getSubscriptionPlanDetails(user.subscriptionPlan as SubscriptionPlan)
 
   // Check if platform is allowed for the plan
   return planDetails.limits.publishing.includes(platform)

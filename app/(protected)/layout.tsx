@@ -4,6 +4,7 @@ import { MobileNav } from "@/components/mobile-nav"
 import { UserAccountNav } from "@/components/user-account-nav"
 import { getCurrentUser } from "@/lib/session"
 import { redirect } from "next/navigation"
+import { Toaster } from "@/components/ui/sonner"
 
 export default async function DashboardLayout({
   children,
@@ -31,6 +32,7 @@ export default async function DashboardLayout({
           <Sidebar />
         </aside>
         <main className="flex w-full flex-1 flex-col overflow-hidden">{children}</main>
+        <Toaster />
       </div>
     </div>
   )
