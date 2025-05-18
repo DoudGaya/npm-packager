@@ -50,13 +50,15 @@ export async function generateMetadata({ params }: PackagePageProps): Promise<Me
 export default async function PackagePage({ params }: PackagePageProps) {
   const user = await getCurrentUser()
 
+  const { id } = await params
+
   if (!user) {
     return notFound()
   }
 
   const pkg = await db.package.findUnique({
     where: {
-      id: params.id,
+      id: id,
       userId: user.id,
     },
   })
