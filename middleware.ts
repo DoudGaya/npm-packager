@@ -33,7 +33,8 @@ export async function middleware(request: NextRequest) {
     pathname.includes(".") ||
     pathname.startsWith("/features") ||
     pathname.startsWith("/pricing") ||
-    pathname.startsWith("/about")
+    pathname.startsWith("/about") ||
+    pathname.startsWith("/docs")
   ) {
     return NextResponse.next()
   }
