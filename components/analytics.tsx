@@ -33,7 +33,7 @@ function AnalyticsContent() {
 // Main component with suspense boundary
 export function Analytics() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<>Loading...</>}>
       <AnalyticsContent />
     </Suspense>
   )

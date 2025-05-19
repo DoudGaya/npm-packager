@@ -4,10 +4,10 @@ import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
-import { Analytics } from "@/components/analytics"
 import { FeedbackDialog } from "@/components/feedback-dialog"
 import { Providers } from "@/app/providers"
 import { siteConfig } from "@/config/site"
+import { Analytics } from "@/components/analytics"
 
 const inter = Inter({ subsets: ["latin"] })
 
