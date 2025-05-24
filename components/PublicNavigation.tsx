@@ -1,16 +1,16 @@
 import React from 'react'
 import Link from 'next/link'
 import { Button } from "@/components/ui/button"
-import { Logo } from './logo'
+import  logo  from '@/public/logo.png'
+import Image from 'next/image'
 
 const PublicNavigation = () => {
   return (
     <div>
-         <header className="sticky top-0 z-40 border-b bg-background">
+         <header className="sticky mx-10 top-0 z-40 border-b bg-background">
                 <div className="container mx-auto flex h-16 items-center justify-between py-4">
-                  <Link href="/" className="flex items-center">
-                    <Logo className="mr-2 h-6 w-6" />
-                    <span className="font-bold">NPM-Packager</span>
+                  <Link href="/" className="flex">
+                    <Image alt='' src={logo} className=' h-10 object-left object-contain' />
                   </Link>
                   <nav className="hidden items-center space-x-4 md:flex">
                     <Link href="/features" className="text-sm font-medium text-muted-foreground hover:text-foreground">

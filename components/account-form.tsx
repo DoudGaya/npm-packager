@@ -1,5 +1,4 @@
-+
-+"use client"
+"use client"
 
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -12,7 +11,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { toast } from "@/components/ui/use-toast"
+// import { toast } from "@/components/ui/use-toast"
+import { updateAccount } from "@/app/actions/auth/update-account"
+import {toast} from 'sonner'
 
 const accountFormSchema = z.object({
   twoFactorEnabled: z.boolean(),
@@ -39,19 +40,22 @@ export function AccountForm({ user }: AccountFormProps) {
   const onSubmit = async (values: z.infer<typeof accountFormSchema>) => {
     try {
       setIsLoading(true)
+      
+      const result = await updateAccount(values)
+      
+      if (result.error) {
+      toast("Success", {
+        description: result.error,
+      })
+        return
+      }
 
-      // In a real implementation, this would call a server action to update the account
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      toast({
-        title: "Success",
-        description: "Account settings updated successfully",
+      toast("Success", {
+        description: "Account settings updated successfully"
       })
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update account settings",
-        variant: "destructive",
+    toast("Error", {
+        description: "Account settings updated successfully"
       })
     } finally {
       setIsLoading(false)

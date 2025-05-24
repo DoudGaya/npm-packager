@@ -60,22 +60,17 @@ export function Providers({ children }: { children: React.ReactNode }) {
 }
 
 // "use client"
-
 // import type React from "react"
-
 // import { useState, useEffect } from "react"
 // import { usePathname, useSearchParams } from "next/navigation"
-
 // export function NavigationEvents() {
 //   const pathname = usePathname()
 //   const searchParams = useSearchParams()
 //   const [isNavigating, setIsNavigating] = useState(false)
-
 //   useEffect(() => {
 //     const handleRouteChangeStart = () => {
 //       setIsNavigating(true)
 //     }
-
 //     const handleRouteChangeComplete = () => {
 //       setIsNavigating(false)
 //     }

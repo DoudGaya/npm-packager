@@ -33,7 +33,7 @@ export function ProfileForm({ user }: ProfileFormProps) {
     defaultValues: {
       name: user.name || "",
       email: user.email || "",
-      bio: "",
+      bio: user.bio || "",
     },
   })
 

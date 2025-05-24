@@ -12,6 +12,7 @@ declare module "next-auth" {
     user: {
       id: string
       role: string
+      bio?: string
     } & DefaultSession["user"]
   }
 }
@@ -28,6 +29,13 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    // Explicitly set the secret again
+    secret: process.env.NEXTAUTH_SECRET,
+    // You can add additional security settings
+    // encryption: true,
   },
   pages: {
     signIn: "/login",
@@ -85,6 +93,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           role: user.role,
+          bio: user.bio,
           image: user.image,
         }
       },
@@ -98,6 +107,7 @@ export const authOptions: NextAuthOptions = {
           id: token.id as string,
           name: token.name,
           email: token.email,
+          bio: token.bio as string,
           role: token.role as string,
           image: token.picture,
         }

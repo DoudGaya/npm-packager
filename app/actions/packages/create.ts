@@ -1,3 +1,117 @@
+// "use server"
+
+// import { z } from "zod"
+// import { revalidatePath } from "next/cache"
+// import { db } from "@/lib/db"
+// import { getCurrentUser } from "@/lib/session"
+// import { PackageStatus } from "@prisma/client"
+// import { generatePackage } from "@/app/actions/ai/generate"
+// import { checkSubscriptionLimit } from "@/lib/subscription"
+
+// const packageSchema = z.object({
+//   name: z.string().min(1, "Package name is required"),
+//   description: z.string().min(10, "Description must be at least 10 characters"),
+//   framework: z.string().min(1, "Framework is required"),
+//   aiModel: z.string().min(1, "AI model is required"),
+//   prompt: z.string().min(20, "Prompt must be at least 20 characters"),
+// })
+
+// export async function createPackage(formData: FormData) {
+//   const validatedFields = packageSchema.safeParse({
+//     name: formData.get("name"),
+//     description: formData.get("description"),
+//     framework: formData.get("framework"),
+//     aiModel: formData.get("aiModel"),
+//     prompt: formData.get("prompt"),
+//   })
+
+//   if (!validatedFields.success) {
+//     return {
+//       error: "Invalid fields",
+//       errors: validatedFields.error.flatten().fieldErrors,
+//     }
+//   }
+
+//   const { name, description, framework, aiModel, prompt } = validatedFields.data
+
+//   const user = await getCurrentUser()
+
+//   if (!user) {
+//     return {
+//       error: "Unauthorized",
+//     }
+//   }
+
+//   try {
+//     // Check subscription limits for package creation
+//     const canCreate = await checkSubscriptionLimit()
+
+//     if (!canCreate.allowed) {
+//       return {
+//         error: canCreate.message,
+//       }
+//     }
+
+//     // Check if user can use the selected AI model
+//     const canUseAI = await checkSubscriptionLimit(aiModel)
+
+//     if (!canUseAI.allowed) {
+//       return {
+//         error: canUseAI.message,
+//       }
+//     }
+
+//     // Generate package code and documentation using AI
+//     const { code, documentation, packageStructure } = await generatePackage({
+//       name,
+//       description,
+//       framework,
+//       prompt,
+//       model: aiModel,
+//     })
+
+//     // Create package in database
+//     const newPackage = await db.package.create({
+//       data: {
+//         name,
+//         description,
+//         framework,
+//         aiModel,
+//         code,
+//         documentation,
+//         userId: user.id,
+//         status: PackageStatus.DRAFT,
+//         packageStructure: JSON.stringify(packageStructure),
+//       },
+//     })
+
+//     // Create initial version
+//     await db.packageVersion.create({
+//       data: {
+//         packageId: newPackage.id,
+//         version: "0.1.0",
+//         code,
+//         documentation,
+//         packageStructure: JSON.stringify(packageStructure),
+//       },
+//     })
+
+//     revalidatePath("/packages")
+//     revalidatePath("/dashboard")
+
+//     return {
+//       success: true,
+//       packageId: newPackage.id,
+//     }
+//   } catch (error) {
+//     console.error("Error creating package:", error)
+//     return {
+//       error: error instanceof Error ? error.message : "Failed to create package",
+//     }
+//   }
+// }
+
+
 "use server"
 
 import { z } from "zod"
@@ -405,138 +519,4 @@ function toCamelCase(str: string) {
   const pascal = toPascalCase(str)
   return pascal.charAt(0).toLowerCase() + pascal.slice(1)
 }
-
-
-// "use server"
-
-// import { z } from "zod"
-// import { revalidatePath } from "next/cache"
-// import { db } from "@/lib/db"
-// import { getCurrentUser } from "@/lib/session"
-// import { generatePackage } from "@/app/actions/ai/generate"
-// import { checkSubscriptionLimit } from "@/lib/subscription"
-
-// const packageSchema = z.object({
-//   name: z.string().min(1),
-//   description: z.string().min(10),
-//   framework: z.string().min(1),
-//   aiModel: z.string().min(1),
-//   prompt: z.string().min(20),
-// })
-
-// export async function createPackage(data: z.infer<typeof packageSchema>) {
-//   const validatedFields = packageSchema.safeParse(data)
-
-//   if (!validatedFields.success) {
-//     return {
-//       error: "Invalid fields",
-//     }
-//   }
-
-//   const user = await getCurrentUser()
-
-//   if (!user) {
-//     return {
-//       error: "Unauthorized",
-//     }
-//   }
-
-//   try {
-//     // Check subscription limits for package creation
-//     const monthStart = new Date()
-//     monthStart.setDate(1)
-//     monthStart.setHours(0, 0, 0, 0)
-
-//     const nextMonth = new Date(monthStart)
-//     nextMonth.setMonth(nextMonth.getMonth() + 1)
-
-//     const packageCount = await db.package.count({
-//       where: {
-//         userId: user.id,
-//         createdAt: {
-//           gte: monthStart,
-//           lt: nextMonth,
-//         },
-//       },
-//     })
-
-//     const subscriptionDetails = await db.user.findUnique({
-//       where: { id: user.id },
-//       select: { subscriptionPlan: true },
-//     })
-
-//     const plan = subscriptionDetails?.subscriptionPlan || "FREE"
-//     const packageLimit = plan === "FREE" ? 5 : Number.POSITIVE_INFINITY
-
-//     if (packageCount >= packageLimit) {
-//       return {
-//         error: `You've reached your monthly limit of ${packageLimit} packages. Upgrade your plan to create more.`,
-//       }
-//     }
-
-//     // Check if user can use the selected AI model
-//     const canUseAI = await checkSubscriptionLimit(user.id, data.aiModel)
-
-//     if (!canUseAI.allowed) { 
-//       return {
-//         error: canUseAI.message,
-//       }
-//     }
-
-//     // Generate package code and documentation using AI
-//     const { code, documentation } = await generatePackage({
-//       name: data.name,
-//       description: data.description,
-//       framework: data.framework,
-//       prompt: data.prompt,
-//       model: data.aiModel,
-//     })
-
-//     // Create package in database
-//     const newPackage = await db.package.create({
-//       data: {
-//         name: data.name,
-//         description: data.description,
-//         framework: data.framework,
-//         aiModel: data.aiModel,
-//         code,
-//         documentation,
-//         userId: user.id,
-//       },
-//     })
-
-//     // Create initial version
-//     await db.packageVersion.create({
-//       data: {
-//         packageId: newPackage.id,
-//         version: "0.1.0",
-//         code,
-//         documentation,
-//       },
-//     })
-
-//     // Deduct credits if not on free tier or if using premium models
-//     //@ts-ignore
-//     if (user.subscriptionPlan !== "FREE" || data.aiModel !== "gpt4o") {
-//       await db.wallet.update({
-//         where: { userId: user.id },
-//         data: {
-//           credits: { decrement: 1 },
-//         },
-//       })
-//     }
-
-//     revalidatePath("/packages")
-//     revalidatePath("/dashboard")
-
-//     return {
-//       packageId: newPackage.id,
-//     }
-//   } catch (error) {
-//     console.error("Error creating package:", error)
-//     return {
-//       error: error instanceof Error ? error.message : "Failed to create package",
-//     }
-//   }
-// }
 
