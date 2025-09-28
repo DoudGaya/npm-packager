@@ -5,8 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Clipboard, Download, ChevronRight, ChevronDown, Folder, FileText } from "lucide-react"
 import { toast } from "@/components/ui/use-toast"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism"
+import { Highlight, themes } from "prism-react-renderer"
 import { cn } from "@/lib/utils"
 
 interface PackageFile {
@@ -304,18 +303,26 @@ export function PackageCode({ code }: PackageCodeProps) {
             </div>
           </div>
           <div className="overflow-auto max-h-[600px]">
-            <SyntaxHighlighter
+            <Highlight
+              theme={themes.vsDark}
+              code={files[0].content}
               language={getLanguage(files[0].path)}
-              style={vscDarkPlus}
-              customStyle={{
-                margin: 0,
-                padding: "1rem",
-                fontSize: "0.875rem",
-                backgroundColor: "transparent",
-              }}
             >
-              {files[0].content}
-            </SyntaxHighlighter>
+              {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                <pre
+                  style={{ ...style, margin: 0, padding: "1rem", fontSize: "0.875rem", backgroundColor: "transparent" }}
+                  className={className}
+                >
+                  {tokens.map((line, i) => (
+                    <div key={i} {...getLineProps({ line })}>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token })} />
+                      ))}
+                    </div>
+                  ))}
+                </pre>
+              )}
+            </Highlight>
           </div>
         </CardContent>
       </Card>
@@ -369,19 +376,26 @@ export function PackageCode({ code }: PackageCodeProps) {
                   </div>
                 </div>
                 <div className="h-[350px] overflow-auto md:h-[556px]">
-                  <SyntaxHighlighter
+                  <Highlight
+                    theme={themes.vsDark}
+                    code={activeFileContent}
                     language={getLanguage(activeFile)}
-                    style={vscDarkPlus}
-                    customStyle={{
-                      margin: 0,
-                      padding: "1rem",
-                      height: "100%",
-                      fontSize: "0.875rem",
-                      backgroundColor: "transparent",
-                    }}
                   >
-                    {activeFileContent}
-                  </SyntaxHighlighter>
+                    {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                      <pre
+                        style={{ ...style, margin: 0, padding: "1rem", height: "100%", fontSize: "0.875rem", backgroundColor: "transparent" }}
+                        className={className}
+                      >
+                        {tokens.map((line, i) => (
+                          <div key={i} {...getLineProps({ line })}>
+                            {line.map((token, key) => (
+                              <span key={key} {...getTokenProps({ token })} />
+                            ))}
+                          </div>
+                        ))}
+                      </pre>
+                    )}
+                  </Highlight>
                 </div>
               </>
             )}

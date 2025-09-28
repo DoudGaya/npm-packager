@@ -24,9 +24,11 @@ const nextConfig = {
   },
   experimental: {
     webpackBuildWorker: true,
+    parallelServerBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  transpilePackages: ['react-syntax-highlighter'],
 }
 
 if (userConfig) {

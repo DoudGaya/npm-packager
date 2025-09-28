@@ -8,8 +8,7 @@ import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import rehypeRaw from "rehype-raw"
 import rehypeSanitize from "rehype-sanitize"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { Highlight, themes } from "prism-react-renderer"
 
 interface PackageDocumentationProps {
   documentation: string
@@ -38,12 +37,22 @@ export function PackageDocumentation({ documentation }: PackageDocumentationProp
             remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw, rehypeSanitize]}
             components={{
-              code({ node, inline, className, children, ...props }) {
+              code({ node, className, children, ...props }) {
                 const match = /language-(\w+)/.exec(className || "")
-                return !inline && match ? (
-                  <SyntaxHighlighter language={match[1]} style={vscDarkPlus} PreTag="div" {...props}>
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
+                return match ? (
+                  <Highlight theme={themes.vsDark} code={String(children).replace(/\n$/, "")} language={match[1]}>
+                    {({ className, style, tokens, getLineProps, getTokenProps }) => (
+                      <div style={style} className={className}>
+                        {tokens.map((line, i) => (
+                          <div key={i} {...getLineProps({ line })}>
+                            {line.map((token, key) => (
+                              <span key={key} {...getTokenProps({ token })} />
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </Highlight>
                 ) : (
                   <code className={className} {...props}>
                     {children}

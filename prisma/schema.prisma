@@ -127,6 +127,9 @@ model Package {
   documentation   String           @db.Text
   packageStructure String?         @db.Text
   status          PackageStatus    @default(DRAFT)
+  repository      String?
+  version         String           @default("0.1.0")
+  npmUrl          String?
   userId          String
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
   versions        PackageVersion[]
@@ -230,6 +233,16 @@ model AIUsage {
   @@index([userId])
   @@index([model])
   @@index([createdAt])
+}
+
+model Contact {
+  id        String    @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 

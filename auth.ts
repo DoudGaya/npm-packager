@@ -1,19 +1,22 @@
 import { PrismaAdapter } from "@auth/prisma-adapter"
-import type { NextAuthOptions } from "next-auth"
+import type { NextAuthConfig } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import GitHubProvider from "next-auth/providers/github"
 import { compare } from "bcryptjs"
-import { DefaultSession } from "next-auth"
+import NextAuth from "next-auth"
 
 import { db } from "@/lib/db"
 
 declare module "next-auth" {
-  interface Session extends DefaultSession {
+  interface Session {
     user: {
       id: string
       role: string
       bio?: string
-    } & DefaultSession["user"]
+      email?: string
+      name?: string
+      image?: string
+    }
   }
 }
 
@@ -24,18 +27,11 @@ async function verifyTOTP(secret: string, token: string): Promise<boolean> {
   return true
 }
 
-export const authOptions: NextAuthOptions = {
+const config: NextAuthConfig = {
   adapter: PrismaAdapter(db),
-  secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
-  jwt: {
-    // Explicitly set the secret again
-    secret: process.env.NEXTAUTH_SECRET,
-    // You can add additional security settings
-    // encryption: true,
   },
   pages: {
     signIn: "/login",
@@ -60,7 +56,7 @@ export const authOptions: NextAuthOptions = {
 
         const user = await db.user.findUnique({
           where: {
-            email: credentials.email,
+            email: credentials.email as string,
           },
         })
 
@@ -68,7 +64,7 @@ export const authOptions: NextAuthOptions = {
           return null
         }
 
-        const isPasswordValid = await compare(credentials.password, user.password)
+        const isPasswordValid = await compare(credentials.password as string, user.password!)
 
         if (!isPasswordValid) {
           return null
@@ -81,7 +77,7 @@ export const authOptions: NextAuthOptions = {
           }
 
           // Verify 2FA code
-          const isValidToken = await verifyTOTP(user.twoFactorSecret!, credentials.code)
+          const isValidToken = await verifyTOTP(user.twoFactorSecret!, credentials.code as string)
 
           if (!isValidToken) {
             throw new Error("INVALID_2FA")
@@ -105,11 +101,11 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           ...session.user,
           id: token.id as string,
-          name: token.name,
-          email: token.email,
+          name: token.name as string | undefined,
+          email: token.email as string,
           bio: token.bio as string,
           role: token.role as string,
-          image: token.picture,
+          image: token.picture as string | undefined,
         }
       }
       return session
@@ -124,3 +120,5 @@ export const authOptions: NextAuthOptions = {
     },
   },
 }
+
+export const { auth, handlers, signIn, signOut } = NextAuth(config)
